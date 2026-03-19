@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMA | Potencia y Seguridad Minera</title>
+    <style>
+        :root {
+            --amarillo-pma: #ffcc00;
+            --gris-oscuro: #232323;
+            --gris-medio: #444444;
+            --gris-claro: #f4f4f4;
+            --blanco: #ffffff;
+            --negro: #000000;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            background-color: var(--gris-claro);
+            color: var(--gris-oscuro);
+            scroll-behavior: smooth;
+        }
+
+        /* --- NAVEGACIÓN --- */
+        header {
+            background-color: rgba(35, 35, 35, 0.95);
+            color: var(--blanco);
+            padding: 0.8rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--amarillo-pma);
+            position: fixed;
+            width: 90%;
+            top: 0;
+            z-index: 2000;
+        }
+
+        .logo-container img { max-height: 45px; width: auto; }
+
+        nav a {
+            color: var(--blanco);
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: var(--amarillo-pma); }
+
+        /* --- HERO CON VIDEO DE FONDO --- */
+        .hero-video-container {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--blanco);
+        }
+
+        #video-fondo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -100;
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: -50;
+        }
+
+        .hero-content { text-align: center; z-index: 100; padding: 0 20px; }
+        .hero-content h1 { font-size: 4rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px; }
+        .hero-content p { font-size: 1.4rem; max-width: 800px; margin: 0 auto 30px; font-weight: 300; }
+
+        /* --- SECCIÓN PRODUCTOS INTERACTIVOS --- */
+        .section { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; text-transform: uppercase; margin-bottom: 50px; font-size: 2.2rem; }
+        .section-title::after { content: ''; width: 80px; height: 5px; background: var(--amarillo-pma); display: block; margin: 15px auto; }
+
+        .interactive-wrapper { position: relative; line-height: 0; }
+        .truck-img { width: 100%; border-radius: 12px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); border: 1px solid #ddd; }
+
+        /* HOTSPOTS (PUNTOS AMARILLOS) */
+        .hotspot { position: absolute; width: 35px; height: 35px; z-index: 100; cursor: pointer; }
+        .dot { width: 14px; height: 14px; background: var(--amarillo-pma); border: 3px solid white; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .pulse-ring { width: 40px; height: 40px; background: rgba(255, 204, 0, 0.5); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: pulse 2s infinite; }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+        }
+
+        /* TARJETAS DE INFORMACIÓN (INFO-CARDS) */
+        .info-card {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: white;
+            width: 300px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            line-height: 1.4;
+            border-bottom: 6px solid var(--amarillo-pma);
+            text-align: left;
+        }
+
+        .info-card h3 { margin: 0 0 5px 0; font-size: 1.1rem; color: var(--gris-oscuro); text-transform: uppercase; }
+        .info-card p { margin: 0; font-size: 0.9rem; color: #555; }
+        .hotspot:hover .info-card { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+        /* --- BOTONES --- */
+        .btn {
+            background-color: var(--amarillo-pma);
+            color: var(--gris-oscuro);
+            padding: 15px 35px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .btn:hover { background-color: #e6b800; transform: scale(1.05); }
+
+        /* --- FOOTER --- */
+        footer { background: var(--negro); color: #888; text-align: center; padding: 60px 5%; border-top: 4px solid var(--amarillo-pma); margin-top: 50px; }
+        footer p { margin: 5px 0; }
+        .footer-logo { max-height: 40px; opacity: 0.6; margin-bottom: 20px; }
+
+        /* --- WHATSAPP FLOTANTE --- */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 3000;
+            text-decoration: none;
+            font-size: 30px;
+            transition: 0.3s;
+        }
+        .whatsapp-btn:hover { transform: scale(1.1); background-color: #128c7e; }
+
+    </style>
+</head>
+<body>
+
+    <a href="https://wa.me/56912345678" class="whatsapp-btn" target="_blank">
+        <span style="font-family: Arial, sans-serif;">WP</span>
+    </a>
+
+    <header>
+        <div class="logo-container">
+            <img src="img/Logo/PMA-Logo.jpeg" alt="PMA Logo">
+        </div>
+        <nav>
+            <a href="#inicio">Inicio</a>
+            <a href="#productos">Equipamiento</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+    </header>
+
+    <section class="hero-video-container" id="inicio">
+        <video autoplay muted loop playsinline id="video-fondo">
+            <source src="img/Video/Video_con_Barra_Modular_Específica.mp4" type="video/mp4">
+        </video>
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Potencia en Faena</h1>
+            <p>Especialistas en equipamiento móvil de alta resistencia para la minería chilena.</p>
+            <a href="#productos" class="btn">Explorar Equipamiento</a>
+        </div>
+    </section>
+
+    <div class="section" id="productos">
+        <h2 class="section-title">Nuestras Soluciones en Terreno</h2>
+        <div class="interactive-wrapper">
+            <img src="img/Fotos/camioneta-base-pma-real.jpg" alt="Camioneta PMA Real" class="truck-img">
+
+            <div class="hotspot" style="top: 28%; left: 72%;">
+                <div class="pulse-ring"></div>
+                <div class="dot"></div>
+                <div class="info-card">
+                    <img src="img/Products/barra-modular-pma-info.jpg" style="width: 100%; height: 120px; object-fit: cover; border-radius: 6px; margin-bottom: 12px;">
+                    <h3>Barra Modular PMA</h3>
+                    <p>Diseño estructural patentado. Tubos negros reforzados con uniones rojas de alta visibilidad y resistencia técnica.</p>
+                </div>
+            </div>
+
+            <div class="hotspot" style="top: 72%; left: 65%;">
+                <div class="pulse-ring"></div>
+                <div class="dot"></div>
+                <div class="info-card">
+                    <img src="img/Products/Compresor Camioneta.avif" style="width: 100%; height: 120px; object-fit: contain; margin-bottom: 12px;">
+                    <h3>Compresor de Alto Flujo</h3>
+                    <p>Instalación integrada para flotas de servicio. Potencia garantizada para inflado y herramientas neumáticas en mina.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="contacto">
+        <div class="logo-container">
+            <img src="img/Logo/PMA-Logo.jpeg" alt="PMA Logo" class="footer-logo">
+        </div>
+        <p><strong>PMA COMERCIALIZADORA SpA</strong></p>
+        <p>Santiago - Calama | Chile</p>
+        <p>Email: contacto@pma.cl | Tel: +56 9 1234 5678</p>
+        <p style="margin-top: 20px; font-size: 0.75rem; opacity: 0.5;">&copy; 2026 PMA - Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
