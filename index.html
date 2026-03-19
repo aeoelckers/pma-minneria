@@ -23,12 +23,12 @@
             overflow-x: hidden;
         }
 
-        /* --- CARRITO FLOTANTE --- */
+        /* --- CARRITO FLOTANTE (WHATSAPP) --- */
         .cart-float {
             position: fixed;
             bottom: 30px;
             left: 30px;
-            background: var(--negro);
+            background: #25d366; /* Verde WhatsApp */
             color: white;
             padding: 15px 20px;
             border-radius: 50px;
@@ -37,20 +37,20 @@
             gap: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             z-index: 3000;
-            border: 2px solid var(--amarillo-pma);
             cursor: pointer;
             transition: 0.3s;
+            text-decoration: none;
+            font-weight: bold;
         }
         .cart-count {
-            background: var(--amarillo-pma);
-            color: var(--negro);
+            background: white;
+            color: #25d366;
             width: 25px;
             height: 25px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-weight: bold;
             font-size: 0.8rem;
         }
 
@@ -91,11 +91,9 @@
         .interactive-wrapper { position: relative; line-height: 0; overflow-x: auto; }
         .truck-img { width: 100%; min-width: 600px; border-radius: 12px; }
 
-        /* HOTSPOTS */
         .hotspot { position: absolute; width: 35px; height: 35px; z-index: 100; cursor: pointer; }
         .dot { width: 14px; height: 14px; background: var(--amarillo-pma); border: 3px solid white; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
         
-        /* CARD DE PRODUCTO */
         .info-card {
             position: absolute;
             bottom: 50px;
@@ -110,12 +108,13 @@
             visibility: hidden;
             transition: 0.3s;
             border-bottom: 5px solid var(--amarillo-pma);
+            line-height: 1.4;
         }
         .hotspot:hover .info-card { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-        .info-card h3 { margin: 0 0 10px 0; font-size: 1rem; }
+        .info-card h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--negro); }
         .info-card p { font-size: 0.85rem; color: #666; margin-bottom: 15px; }
 
-        /* BOTONES E-COMMERCE */
+        /* BOTONES */
         .btn-add {
             background: var(--amarillo-pma);
             color: var(--negro);
@@ -154,10 +153,10 @@
 </head>
 <body>
 
-    <div class="cart-float" onclick="alert('Redirigiendo a solicitud de cotización con tus productos seleccionados...')">
-        <span>📦 Mi Cotización</span>
+    <a id="cart-btn" class="cart-float" href="javascript:void(0)" onclick="sendQuote()">
+        <span>🛒 Enviar Cotización</span>
         <div class="cart-count" id="cart-count">0</div>
-    </div>
+    </a>
 
     <header>
         <div class="logo-container">
@@ -191,8 +190,8 @@
                 <div class="info-card">
                     <img src="img/Products/barra-modular-pma-info.jpg" style="width: 100%; margin-bottom: 10px; border-radius: 4px;">
                     <h3>Barra Modular Específica</h3>
-                    <p>Requiere configuración según modelo de camioneta.</p>
-                    <a href="https://wa.me/56912345678" class="btn-quote">Cotizar por WhatsApp</a>
+                    <p>Configuración técnica según modelo. Solicita tu diseño aquí.</p>
+                    <a href="https://wa.me/56973392197?text=Hola%20PMA,%20me%20interesa%20cotizar%20la%20Barra%20Modular%20para%20camioneta." class="btn-quote" target="_blank">Cotizar por WhatsApp</a>
                 </div>
             </div>
 
@@ -201,7 +200,7 @@
                 <div class="info-card">
                     <img src="img/Products/Compresor Camioneta.avif" style="width: 100%; margin-bottom: 10px; border-radius: 4px;">
                     <h3>Compresor PMA Pro</h3>
-                    <p>Entrega inmediata. Stock disponible.</p>
+                    <p>Sistema de aire de alta fidelidad. Stock disponible para despacho.</p>
                     <button class="btn-add" onclick="updateCart()">Añadir al Carrito</button>
                 </div>
             </div>
@@ -217,10 +216,20 @@
         function updateCart() {
             count++;
             document.getElementById('cart-count').innerText = count;
-            // Efecto visual simple
-            const cart = document.querySelector('.cart-float');
-            cart.style.transform = 'scale(1.2)';
-            setTimeout(() => cart.style.transform = 'scale(1)', 200);
+            const btn = document.getElementById('cart-btn');
+            btn.style.transform = 'scale(1.1)';
+            setTimeout(() => btn.style.transform = 'scale(1)', 200);
+        }
+
+        function sendQuote() {
+            if(count === 0) {
+                alert("Primero añade algún producto al carrito.");
+                return;
+            }
+            const phone = "56973392197";
+            const message = `Hola PMA, me gustaría cotizar ${count} unidad(es) del Compresor PMA Pro visto en su sitio web.`;
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
         }
     </script>
 
